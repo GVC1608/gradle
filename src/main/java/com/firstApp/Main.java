@@ -18,17 +18,10 @@ public class Main {
                 );
 
 //        ExecutorService executorSerive = Executors.newFixedThreadPool(10);
-        DeadLockImplementation d1 = new DeadLockImplementation();
-        Thread t1 = new Thread(() -> {
-            try {
-                d1.firstLock();
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        Thread t2 = new Thread(()->{
-            d1.secondLock();
-        });
+        SynchronizedLock synchronizedLock = new SynchronizedLock();
+
+        Thread t1 = new Thread(synchronizedLock::firstMethod);
+        Thread t2 = new Thread(synchronizedLock::secondMethod);
 
         t1.start();
         t2.start();
@@ -39,7 +32,8 @@ public class Main {
         }catch (InterruptedException e){
             System.out.println(e);
         }
-        d1.showNumber();
+        synchronizedLock.getTheSize();
+
 
     }
 }
